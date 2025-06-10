@@ -74,20 +74,20 @@ jobs:
       - name: Push Docker image
         run: docker push $IMAGE_NAME:latest
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            docker pull $IMAGE_NAME:latest
-            docker stop app || true
-            docker rm app || true
-            docker run -d --name app -p 80:8080 $IMAGE_NAME:latest
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    if: github.ref == 'refs/heads/main'
+#
+#    steps:
+#      - name: Deploy over SSH
+#        uses: appleboy/ssh-action@v1.0.0
+#        with:
+#          host: ${{ secrets.SERVER_IP }}
+#          username: ${{ secrets.SERVER_USER }}
+#          key: ${{ secrets.SERVER_SSH_KEY }}
+#          script: |
+#            docker pull $IMAGE_NAME:latest
+#            docker stop app || true
+#            docker rm app || true
+#            docker run -d --name app -p 80:8080 $IMAGE_NAME:latest
